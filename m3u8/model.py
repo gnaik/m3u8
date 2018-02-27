@@ -464,7 +464,7 @@ class Playlist(BasePathMixin):
     Attributes:
 
     `stream_info` is a named tuple containing the attributes: `program_id`,
-    `bandwidth`, `average_bandwidth`, `resolution`, `codecs` and `resolution`
+    `bandwidth`, `average_bandwidth`, `subtitles`, `resolution`, `codecs` and `resolution`
     which is a a tuple (w, h) of integers
 
     `media` is a list of related Media entries.
@@ -490,6 +490,7 @@ class Playlist(BasePathMixin):
             average_bandwidth=stream_info.get('average_bandwidth'),
             program_id=stream_info.get('program_id'),
             resolution=resolution_pair,
+            subtitles=stream_info.get('subtitles'),
             codecs=stream_info.get('codecs')
         )
         self.media = []
@@ -517,6 +518,8 @@ class Playlist(BasePathMixin):
             stream_inf.append('RESOLUTION=' + res)
         if self.stream_info.codecs:
             stream_inf.append('CODECS=' + quoted(self.stream_info.codecs))
+        if self.stream_info.subtitles:
+            stream_inf.append('SUBTITLES=%s' % quoted(self.stream_info.subtitles))
 
         media_types = []
         for media in self.media:
@@ -586,7 +589,7 @@ class IFramePlaylist(BasePathMixin):
 
 StreamInfo = namedtuple(
     'StreamInfo',
-    ['bandwidth', 'closed_captions', 'average_bandwidth', 'program_id', 'resolution', 'codecs']
+    ['bandwidth', 'closed_captions', 'average_bandwidth', 'program_id', 'resolution', 'codecs', 'subtitles']
 )
 
 
